@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$USD App - Send Money</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .form-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .send-btn {
+      background-color: #00c244;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .send-btn:hover {
+      background-color: #00a636;
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 10px;
+      }
+
+      input, select {
+        padding: 8px;
+      }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content h2 {
+      color: #00c244;
+      font-size: 1.5rem;
+    }
+
+    .modal-content p {
+      margin: 10px 0;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      background-color: #00c244;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Send Money</h1>
+    <form id="sendMoneyForm">
+      <label for="bankName">Bank Name</label>
+      <input type="text" id="bankName" name="bankName" required>
+
+      <label for="country">Country</label>
+      <select id="country" name="country" required>
+        <option value="USA">USA</option>
+        <option value="UK">UK</option>
+        <option value="Canada">Canada</option>
+      </select>
+
+      <label for="amount">Amount to Send</label>
+      <input type="number" id="amount" name="amount" required>
+
+      <label for="receiverName">Receiver's Name</label>
+      <input type="text" id="receiverName" name="receiverName" required>
+
+      <label for="accountNumber">Receiver's Account Number</label>
+      <input type="text" id="accountNumber" name="accountNumber" required>
+
+      <button type="submit" class="send-btn">Send</button>
+    </form>
+  </div>
+
+  <!-- Success Popup Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <h2>Transaction Successful!</h2>
+      <p>Activate Your $USD APP So your Money Will Send To Your Bank.</p>
+      <button onclick="window.location.href='home.html'">Close</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('sendMoneyForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const amount = parseFloat(document.getElementById('amount').value);
+      const currentBalance = parseFloat(localStorage.getItem('balance') || '0.00');
+
+      if (amount > currentBalance) {
+        alert('Insufficient balance');
+      } else {
+        // Deduct the amount from the balance and save to localStorage
+        const newBalance = (currentBalance - amount).toFixed(2);
+        localStorage.setItem('balance', newBalance);
+
+        // Show the success modal
+        document.getElementById('successModal').style.display = 'block';
+      }
+    });
+
+    // Function to close the modal
+    function closeModal() {
+      document.getElementById('successModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

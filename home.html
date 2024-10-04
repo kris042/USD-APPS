@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>$USD App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+    }
+
+    .container {
+      max-width: 100%;
+      width: 95%;
+      margin: 20px auto;
+      padding: 10px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    /* Header Styling */
+    .app-header {
+      background-color: #00c244;
+      padding: 20px;
+      border-radius: 10px 10px 0 0;
+      color: white;
+      text-align: left;
+    }
+
+    .app-header h1 {
+      font-size: 2rem;
+    }
+
+    .welcome-message {
+      font-size: 1.2rem;
+      margin-top: 5px;
+      color: white;
+    }
+
+    /* Balance Section */
+    .balance-section {
+      margin: 15px 0;
+      padding: 15px;
+      background-color: #f7f7f7;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .balance-section h2 {
+      font-size: 1.4rem;
+      color: #888;
+    }
+
+    .balance {
+      font-size: 2rem;
+      margin: 10px 0;
+      color: #000;
+    }
+
+    .add-money-btn {
+      background-color: #00c244;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-money-btn:hover {
+      background-color: #00a636;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      justify-content: space-between; 
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap; 
+    }
+
+    .action-btn {
+      background-color: #00c244;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 20px;
+      width: 100%; 
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      flex: 1;
+      min-width: 30%; 
+    }
+
+    .action-btn:hover {
+      background-color: #00a636;
+    }
+
+    /* Transaction History Section */
+    .transaction-history {
+      margin: 30px 0;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 10px; /* Add padding to prevent scrollbar overlap */
+    }
+
+    .transaction-history h3 {
+      text-align: left;
+      margin-bottom: 15px;
+      color: #555;
+      font-size: 1.3rem;
+    }
+
+    .transaction {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #e1e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .transaction .details {
+      text-align: left;
+      flex: 1;
+    }
+
+    .transaction .details p {
+      margin: 3px 0;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .transaction .amount {
+      font-weight: bold;
+      color: #00c244;
+      flex-shrink: 0;
+      word-wrap: break-word;
+    }
+
+    /* Footer Button */
+    .home-btn {
+      background-color: #00c244;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover {
+      background-color: #00a636;
+    }
+
+    /* Popup Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 15% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content h2 {
+      color: #00c244;
+      font-size: 1.5rem;
+    }
+
+    .modal-content p {
+      margin: 10px 0;
+    }
+
+    .modal-content button {
+      padding: 10px 20px;
+      background-color: #00c244;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .action-buttons {
+        flex-direction: row;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .app-header h1 {
+        font-size: 1.6rem;
+      }
+
+      .welcome-message {
+        font-size: 1rem;
+      }
+
+      .balance {
+        font-size: 1.8rem;
+      }
+
+      .transaction-history h3 {
+        font-size: 1.1rem;
+      }
+
+      .transaction .details p {
+        font-size: 0.75rem;
+      }
+
+      .modal-content {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header Section -->
+    <header class="app-header">
+      <h1>$USD App</h1>
+      <p class="welcome-message">Welcome, Peace</p>
+    </header>
+
+    <!-- Balance Section -->
+    <div class="balance-section">
+      <h2>$USD Balance</h2>
+      <p class="balance" id="balance">$501,950.00</p>
+      <button class="add-money-btn">Add Money</button>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn send" onclick="window.location.href='send.html'">Send</button>
+      <button class="action-btn request">Request</button>
+      <button class="action-btn add-card">Add Card</button>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="transaction-history">
+      <h3>Transaction History</h3>
+      <div class="transaction">
+        <div class="details">
+          <p>Payment to John</p>
+          <p>September 23, 2024</p>
+        </div>
+        <div class="amount">- $50.00</div>
+      </div>
+      <div class="transaction">
+        <div class="details">
+          <p>Received from Jane</p>
+          <p>September 20, 2024</p>
+        </div>
+        <div class="amount">+ $120.00</div>
+      </div>
+      <div class="transaction">
+        <div class="details">
+          <p>Payment to Grocery</p>
+          <p>September 18, 2024</p>
+        </div>
+        <div class="amount">- $30.00</div>
+      </div>
+    </div>
+
+    <!-- Footer Home Button -->
+    <footer>
+      <button onclick='window.location.href="login.html"' class="home-btn">LOG OUT</button>
+    </footer>
+  </div>
+
+  <!-- Success Popup Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <h2>Transaction Successful!</h2>
+      <p>Your transaction was completed successfully.</p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Load balance from local storage when page loads
+    window.onload = function() {
+      let savedBalance = localStorage.getItem('balance');
+      if (savedBalance !== null) {
+        document.getElementById('balance').innerText = `$${parseFloat(savedBalance).toLocaleString()}.00`;
+      }
+    };
+
+    // Send money and deduct balance
+    function sendMoney() {
+      let balanceElem = document.getElementById('balance');
+      let currentBalance = parseFloat(balanceElem.innerText.replace(/[\$,]/g, ''));
+      let amountToSend = prompt('Enter the amount to send:');
+      
+      if (amountToSend && !isNaN(amountToSend)) {
+        let amount = parseFloat(amountToSend);
+        if (amount > 0 && amount <= currentBalance) {
+          currentBalance -= amount;
+          balanceElem.innerText = `$${currentBalance.toLocaleString()}.00`;
+
+          // Save updated balance to local storage
+          localStorage.setItem('balance', currentBalance);
+
+          // Show success modal
+          document.getElementById('successModal').style.display = 'block';
+        } else {
+          alert('Insufficient balance or invalid amount.');
+        }
+      } else {
+        alert('Please enter a valid amount.');
+      }
+    }
+
+    // Close the modal
+    function closeModal() {
+      document.getElementById('successModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
